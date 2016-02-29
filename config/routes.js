@@ -22,19 +22,19 @@ module.exports = function(app) {
 
   // Transaction routes
   var transactions = require('../app/controllers/transactions');
-  app.get(apiPrefix + '/tx/:txid', transactions.show);
-  app.param('txid', transactions.transaction);
+  app.get(apiPrefix + '/txs/:txids', transactions.show);
+  app.param('txids', transactions.transactions);
   app.get(apiPrefix + '/txs', transactions.list);
   app.post(apiPrefix + '/tx/send', transactions.send);
 
   // Address routes
   var addresses = require('../app/controllers/addresses');
-  app.get(apiPrefix + '/addrs/:addrs', addresses.show);
+  app.get(apiPrefix + '/addr/:addrs', addresses.show);
   app.get(apiPrefix + '/addr/:addr/utxo', addresses.utxo);
-  app.get(apiPrefix + '/addrs/:addrs/utxo', addresses.multiutxo);
-  app.post(apiPrefix + '/addrs/utxo', addresses.multiutxo);
-  app.get(apiPrefix + '/addrs/:addrs/txs', addresses.multitxs);
-  app.post(apiPrefix + '/addrs/txs', addresses.multitxs);
+//  app.get(apiPrefix + '/addrs/:addrs/utxo', addresses.multiutxo);
+  app.get(apiPrefix + '/addrs/utxo/:addrs', addresses.multiutxo);
+// app.get(apiPrefix + '/addrs/:addrs/txs', addresses.multitxs);
+  app.get(apiPrefix + '/addrs/txs/:addrs', addresses.multitxs);
 
   // Address property routes
   app.get(apiPrefix + '/addr/:addr/balance', addresses.balance);
