@@ -35,34 +35,52 @@ exports.send = function(req, res) {
 };
 
 
-exports.rawTransaction = function (req, res, next, txid) {
-    bitcoreRpc.getRawTransaction(txid, function (err, transaction) {
-        if (err || !transaction)
-            return common.handleErrors(err, res);
-        else {
-            req.rawTransaction = { 'rawtx': transaction.result };
-            return next();
-        }
+exports.rawTransactions = function (req, res, next, txids) {
+  
+  var rawTxsInfo=[];
+  var t=txids.split(",");
+
+if (t.length === 0) 
+{
+
+req.rawTransaction=rawTxsInfo;
+
+return next();
+
+ };
+  
+  async.each(t, function (txid, callback) {
+
+Rpc.getRawTransaction(txid, function (err, transaction) {
+        if (err) console.log(err);
+            
+            if(transaction && transaction.result)
+{
+  rawTxsInfo.push(transaction.result);
+}
+callback();
+            });
+      
+    }, function (err) {
+
+      if (err) console.log(err);
+      
+     req.rawtTransactions=rawTxsInfo;
+
+      return next();
+    
     });
+  
+  
+    
 };
-
-
-
-
-
-
-
 
 
 /**
  * Find transactions by hashes ...
  */
 
-
-
 exports.transactions = function(req, res, next, txids) {
-
-  
 
 var txWithInfo=[];
 
@@ -119,8 +137,8 @@ exports.show = function(req, res) {
  */
 exports.showRaw = function(req, res) {
 
-  if (req.rawTransaction) {
-    res.jsonp(req.rawTransaction);
+  if (req.rawTransactions) {
+    res.jsonp(req.rawTransactions);
   }
 };
 
