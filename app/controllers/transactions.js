@@ -8,8 +8,12 @@ var async       = require('async');
 var common      = require('./common');
 var util        = require('util');
 
+var imports = require('soop').imports();
 var Rpc           = require('../../lib/Rpc');
-
+var bitcore = require('bitcore');
+var RpcClient = bitcore.RpcClient;
+var config = require('../../config/config');
+var bitcoreRpc = imports.bitcoreRpc || new RpcClient(config.bitcoind);
 var tDb = require('../../lib/TransactionDb').default();
 var bdb = require('../../lib/BlockDb').default();
 
@@ -49,9 +53,9 @@ return next();
 
  };
   
-  async.each(t, function (txid, callback) {
+    async.each(t, function (txid, callback) {
 
-Rpc.getRawTransaction(txid, function (err, transaction) {
+bitcoreRpc.getRawTransaction(txid, function (err, transaction) {
         if (err) console.log(err);
             
             if(transaction && transaction.result)
