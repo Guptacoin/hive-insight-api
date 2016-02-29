@@ -1,4 +1,4 @@
-'use strict';
+(function (exports, require, module, __filename, __dirname) { 'use strict';
 
 /**
  * Module dependencies.
@@ -46,7 +46,6 @@ var getAddrs = function(req, res, next) {
   return as;
 };
 
-
 //support for multiple address
 
 exports.show = function(req, res, next) {
@@ -69,20 +68,20 @@ exports.show = function(req, res, next) {
   }
 };
 
-//support for single address 
+//for single address
 
 //exports.show = function(req, res, next) {
 //  var a = getAddr(req, res, next);
 
-//  if (a) {
-//    a.update(function(err) {
-//      if (err) {
-//        return common.handleErrors(err, res);
-//      } else {
-//        return res.jsonp(a.getObj());
-//      }
-//    }, {txLimit: req.query.noTxList?0:-1, ignoreCache: req.param('noCache')});
-//  }
+ // if (a) {
+   // a.update(function(err) {
+     // if (err) {
+     //   return common.handleErrors(err, res);
+    //  } else {
+    //    return res.jsonp(a.getObj());
+    //  }
+    //}, {txLimit: req.query.noTxList?0:-1, ignoreCache: req.param('noCache')});
+ // }
 //};
 
 
@@ -229,3 +228,5 @@ exports.unconfirmedBalance = function(req, res, next) {
       }
     }, {ignoreCache: req.param('noCache')});
 };
+
+});
