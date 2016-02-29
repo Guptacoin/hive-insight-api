@@ -29,7 +29,7 @@ module.exports = function(app) {
 
   // Address routes
   var addresses = require('../app/controllers/addresses');
-  app.get(apiPrefix + '/addr/:addrs', addresses.show);
+  app.get(apiPrefix + '/addrs/:addrs', addresses.show);
   app.get(apiPrefix + '/addr/:addr/utxo', addresses.utxo);
   app.get(apiPrefix + '/addrs/:addrs/utxo', addresses.multiutxo);
   app.post(apiPrefix + '/addrs/utxo', addresses.multiutxo);
