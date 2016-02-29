@@ -27,6 +27,12 @@ module.exports = function(app) {
   app.get(apiPrefix + '/txs', transactions.list);
   app.post(apiPrefix + '/tx/send', transactions.send);
 
+
+ // Raw Routes
+  app.get(apiPrefix + '/rawtxs/:txids', transactions.showRaw);
+  app.param('txids', transactions.rawTransactions);
+
+
   // Address routes
   var addresses = require('../app/controllers/addresses');
   app.get(apiPrefix + '/addr/:addrs', addresses.show);
