@@ -1,4 +1,4 @@
-'use strict';
+(function (exports, require, module, __filename, __dirname) { 'use strict';
 
 /**
  * Module dependencies.
@@ -36,19 +36,52 @@ exports.send = function(req, res) {
 
 
 /**
- * Find transaction by hash ...
+ * Find transactions by hashes ...
  */
-exports.transaction = function(req, res, next, txid) {
 
-  tDb.fromIdWithInfo(txid, function(err, tx) {
-    if (err || ! tx)
-      return common.handleErrors(err, res);
-    else {
-      req.transaction = tx.info;
+
+
+exports.transactions = function(req, res, next, txids) {
+
+  
+
+var txWithInfo=[];
+
+var t=txids.split(",");
+
+if (t.length === 0) 
+{
+
+req.transactions=txWithInfo;
+
+return next();
+
+ };
+
+
+    async.each(t, function (txid, callback) {
+
+      tDb.fromIdWithInfo(txid, function(err, txinfo) {
+        if (err) console.log(err);
+
+        if (txinfo && txinfo.info) {
+
+          txWithInfo.push(txinfo.info);
+        }
+        callback();
+      });
+    }, function (err) {
+
+      if (err) console.log(err);
+      
+     req.transactions=txWithInfo;
+
       return next();
-    }
-  });
+    
+    });
+
 };
+
 
 
 /**
@@ -56,8 +89,8 @@ exports.transaction = function(req, res, next, txid) {
  */
 exports.show = function(req, res) {
 
-  if (req.transaction) {
-    res.jsonp(req.transaction);
+  if (req.transactions) {
+    res.jsonp(req.transactions);
   }
 };
 
@@ -164,3 +197,5 @@ exports.list = function(req, res, next) {
     });
   }
 };
+
+});
