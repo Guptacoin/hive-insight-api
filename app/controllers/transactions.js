@@ -35,6 +35,25 @@ exports.send = function(req, res) {
 };
 
 
+exports.rawTransaction = function (req, res, next, txid) {
+    bitcoreRpc.getRawTransaction(txid, function (err, transaction) {
+        if (err || !transaction)
+            return common.handleErrors(err, res);
+        else {
+            req.rawTransaction = { 'rawtx': transaction.result };
+            return next();
+        }
+    });
+};
+
+
+
+
+
+
+
+
+
 /**
  * Find transactions by hashes ...
  */
@@ -93,6 +112,19 @@ exports.show = function(req, res) {
     res.jsonp(req.transactions);
   }
 };
+
+
+/**
+ * Show raw transaction
+ */
+exports.showRaw = function(req, res) {
+
+  if (req.rawTransaction) {
+    res.jsonp(req.rawTransaction);
+  }
+};
+
+
 
 
 var getTransaction = function(txid, cb) {
