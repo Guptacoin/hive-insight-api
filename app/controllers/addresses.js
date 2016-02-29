@@ -46,19 +46,44 @@ var getAddrs = function(req, res, next) {
   return as;
 };
 
-exports.show = function(req, res, next) {
-  var a = getAddr(req, res, next);
 
-  if (a) {
+//support for multiple address
+
+exports.show = function(req, res, next) {
+  var as = getAddrs(req, res, next);
+
+  if (as) {
+    var addrsInfo=[];
+     async.each(as, function(a, callback) {
     a.update(function(err) {
-      if (err) {
-        return common.handleErrors(err, res);
-      } else {
-        return res.jsonp(a.getObj());
-      }
-    }, {txLimit: req.query.noTxList?0:-1, ignoreCache: req.param('noCache')});
+      if (err) callback(err);
+      addrsInfo=addrsInfo.concat(a.getObj());
+      callback();
+      
+      },{txLimit: req.query.noTxList?0:-1, ignoreCache: req.param('noCache')});
+     },function(err) { // finished callback
+      if (err) return common.handleErrors(err, res);
+      res.jsonp(addrsInfo);
+
+    });
   }
 };
+
+//support for single address 
+
+//exports.show = function(req, res, next) {
+//  var a = getAddr(req, res, next);
+
+//  if (a) {
+//    a.update(function(err) {
+//      if (err) {
+//        return common.handleErrors(err, res);
+//      } else {
+//        return res.jsonp(a.getObj());
+//      }
+//    }, {txLimit: req.query.noTxList?0:-1, ignoreCache: req.param('noCache')});
+//  }
+//};
 
 
 
