@@ -60,7 +60,7 @@ return res.jsonp(blocksInfo);
       console.log(err);
       
     } else {
-      blockHashes.push(hash)
+      blockHashes.push(hash.blockHash)
     }
     callback();
   });
