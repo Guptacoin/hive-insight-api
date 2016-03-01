@@ -17,8 +17,8 @@ module.exports = function(app) {
   app.get(apiPrefix + '/block/:blockHash', blocks.show);
   app.param('blockHash', blocks.block);
 
-  app.get(apiPrefix + '/block-index/:height', blocks.blockindex);
-  app.param('height', blocks.blockindex);
+  app.get(apiPrefix + '/block-index/:heights', blocks.blockindexs);
+  app.param('heights', blocks.blockindexs);
 
   // Transaction routes
   var transactions = require('../app/controllers/transactions');
