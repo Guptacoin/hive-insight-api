@@ -1,4 +1,4 @@
-(function (exports, require, module, __filename, __dirname) { 'use strict';
+'use strict';
 
 /**
  * Module dependencies.
@@ -229,4 +229,3 @@ exports.unconfirmedBalance = function(req, res, next) {
     }, {ignoreCache: req.param('noCache')});
 };
 
-});
