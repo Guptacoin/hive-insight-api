@@ -39,17 +39,39 @@ exports.show = function(req, res) {
 };
 
 /**
- * Show block by Height
+ * Show blocks by Heights
  */
-exports.blockindex = function(req, res, next, height) {
-  bdb.blockIndex(height, function(err, hashStr) {
+exports.blockindexs = function(req, res, next, heights) {
+ var blocksInfo=[];
+ 
+  var b=heights.split(",");
+
+if (b.length === 0) 
+{
+ console.log("require block ids");
+return res.jsonp(blocksInfo);
+
+ };
+ 
+  async.each(b, function (height, callback) {
+    
+  bdb.blockIndex(height, function(err, info) {
     if (err) {
       console.log(err);
       res.status(400).send('Bad Request'); // TODO
     } else {
-      res.jsonp(hashStr);
+      blocksInfo.push(info)
     }
+    callback();
   });
+  },
+  function (err) {
+
+      if (err) console.log(err);
+      
+    return res.jsonp(blocksInfo);
+    });
+  
 };
 
 var getBlock = function(blockhash, cb) {
