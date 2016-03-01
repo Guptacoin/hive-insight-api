@@ -58,7 +58,7 @@ return res.jsonp(blocksInfo);
   bdb.blockIndex(height, function(err, hash) {
     if (err) {
       console.log(err);
-      res.status(400).send('Bad Request'); // TODO
+      
     } else {
       blockHashes.push(hash)
     }
@@ -67,7 +67,7 @@ return res.jsonp(blocksInfo);
   },
   function (err) {
 
-      if (err) res.status(500).send('Internal Error'); // TODO;
+      if (err) console.log(err); // TODO;
       
       async.each(blockHashes, function (hash, callback) {
     
