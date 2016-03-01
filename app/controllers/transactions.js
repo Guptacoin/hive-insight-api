@@ -1,4 +1,4 @@
-(function (exports, require, module, __filename, __dirname) { 'use strict';
+'use strict';
 
 /**
  * Module dependencies.
@@ -252,4 +252,4 @@ exports.list = function(req, res, next) {
   }
 };
 
-});
+
