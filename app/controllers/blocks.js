@@ -43,7 +43,7 @@ exports.show = function(req, res) {
  */
 exports.blockindexs = function(req, res, next, heights) {
  var blocksInfo=[];
- 
+ var blockHashes=[];
   var b=heights.split(",");
 
 if (b.length === 0) 
@@ -55,21 +55,40 @@ return res.jsonp(blocksInfo);
  
   async.each(b, function (height, callback) {
     
-  bdb.blockIndex(height, function(err, info) {
+  bdb.blockIndex(height, function(err, hash) {
     if (err) {
       console.log(err);
       res.status(400).send('Bad Request'); // TODO
     } else {
-      blocksInfo.push(info)
+      blockHashes.push(hash)
     }
     callback();
   });
   },
   function (err) {
 
-      if (err) console.log(err);
+      if (err) res.status(500).send('Internal Error'); // TODO;
       
-    return res.jsonp(blocksInfo);
+      async.each(blockHashes, function (hash, callback) {
+    
+      bdb.fromHashWithInfo(hash, function(err, block) {
+   if(err || !block) 
+   {
+     console.log(err);
+   }
+   else
+   {
+     blocksInfo.push(block);
+   }
+    callback();
+  });
+    },function(err)
+      {
+      if(err) console.log(err);
+      
+       return res.jsonp(blocksInfo);  
+      });
+      
     });
   
 };
