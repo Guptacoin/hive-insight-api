@@ -69,7 +69,7 @@ callback();
 
       if (err) console.log(err);
       
-     req.rawtTransactions=rawTxsInfo;
+     req.rawTransactions=rawTxsInfo;
 
       return next();
     
