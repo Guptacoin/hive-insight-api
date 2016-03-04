@@ -55,7 +55,7 @@ return next();
   
     async.each(t, function (txid, callback) {
 
-bitcoreRpc.getRawTransaction(txid, function (err, transaction) {
+bitcoreRpc.getRawTransaction(txid,1, function (err, transaction) {
         if (err) console.log(err);
             
             if(transaction && transaction.result)
