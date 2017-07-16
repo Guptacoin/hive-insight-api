@@ -58,7 +58,7 @@ var isLinux = /^linux/.test(process.platform);
 if (!dataDir) {
   if (isWin) dataDir = '%APPDATA%\\Bitcoin\\';
   if (isMac) dataDir = process.env.HOME + '/Library/Application Support/Bitcoin/';
-  if (isLinux) dataDir = process.env.HOME + '/.AuroraCoin/';
+  if (isLinux) dataDir = process.env.HOME + '/.auroracoin/';
 }
 dataDir += network === 'testnet' ? 'testnet3' : '';
 
